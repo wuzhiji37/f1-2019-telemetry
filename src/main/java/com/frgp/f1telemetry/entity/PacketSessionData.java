@@ -1,19 +1,19 @@
 package com.frgp.f1telemetry.entity;
 
-import com.frgp.f1telemetry.entity.elements.*;
+import com.frgp.f1telemetry.entity.elements.MarshalZone;
 
 import java.util.List;
 
 public class PacketSessionData extends Packet {
 
-    private Weather weather;
+    private int weather;
     private int trackTemperature;
     private int airTemperature;
     private int totalLaps;
     private int trackLength;
-    private SessionType sessionType;
+    private int sessionType;
     private int trackId;
-    private Formula formula;
+    private int formula;
     private int sessionTimeLeft;
     private int sessionDuration;
     private int pitSpeedLimit;
@@ -23,17 +23,17 @@ public class PacketSessionData extends Packet {
     private boolean sliProNativeSupport;
     private int numMarshalZones;
     private List<MarshalZone> marshalZones;
-    private SafetyCarStatus safetyCarStatus;
+    private int safetyCarStatus;
     private boolean networkGame;
 
     public PacketSessionData() {
     }
 
-    public Weather getWeather() {
+    public int getWeather() {
         return weather;
     }
 
-    public void setWeather(Weather weather) {
+    public void setWeather(int weather) {
         this.weather = weather;
     }
 
@@ -69,11 +69,11 @@ public class PacketSessionData extends Packet {
         this.trackLength = trackLength;
     }
 
-    public SessionType getSessionType() {
+    public int getSessionType() {
         return sessionType;
     }
 
-    public void setSessionType(SessionType sessionType) {
+    public void setSessionType(int sessionType) {
         this.sessionType = sessionType;
     }
 
@@ -85,11 +85,11 @@ public class PacketSessionData extends Packet {
         this.trackId = trackId;
     }
 
-    public Formula getFormula() {
+    public int getFormula() {
         return formula;
     }
 
-    public void setFormula(Formula formula) {
+    public void setFormula(int formula) {
         this.formula = formula;
     }
 
@@ -117,7 +117,7 @@ public class PacketSessionData extends Packet {
         this.pitSpeedLimit = pitSpeedLimit;
     }
 
-    public boolean isGamePaused() {
+    public boolean getGamePaused() {
         return gamePaused;
     }
 
@@ -125,7 +125,7 @@ public class PacketSessionData extends Packet {
         this.gamePaused = gamePaused;
     }
 
-    public boolean isSpectating() {
+    public boolean getSpectating() {
         return spectating;
     }
 
@@ -141,7 +141,7 @@ public class PacketSessionData extends Packet {
         this.spectatorCarIndex = spectatorCarIndex;
     }
 
-    public boolean isSliProNativeSupport() {
+    public boolean getSliProNativeSupport() {
         return sliProNativeSupport;
     }
 
@@ -165,15 +165,15 @@ public class PacketSessionData extends Packet {
         this.marshalZones = marshalZones;
     }
 
-    public SafetyCarStatus getSafetyCarStatus() {
+    public int getSafetyCarStatus() {
         return safetyCarStatus;
     }
 
-    public void setSafetyCarStatus(SafetyCarStatus safetyCarStatus) {
+    public void setSafetyCarStatus(int safetyCarStatus) {
         this.safetyCarStatus = safetyCarStatus;
     }
 
-    public boolean isNetworkGame() {
+    public boolean getNetworkGame() {
         return networkGame;
     }
 

@@ -16,7 +16,7 @@ public class RacingApplication {
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(RacingApplication.class, args);
-        F12019TelemetryUDPServer.main();
+        F12019TelemetryUDPServer.init();
     }
 
 }

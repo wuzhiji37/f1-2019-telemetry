@@ -284,14 +284,14 @@ public class PacketDeserializer {
         PacketSessionData sessionData = new PacketSessionData();
 
         sessionData.setHeader(header);
-        sessionData.setWeather(Weather.fromInt(buffer.getNextUInt8AsInt()));
+        sessionData.setWeather(buffer.getNextUInt8AsInt());
         sessionData.setTrackTemperature(buffer.getNextInt8AsInt());
         sessionData.setAirTemperature(buffer.getNextInt8AsInt());
         sessionData.setTotalLaps(buffer.getNextUInt8AsInt());
         sessionData.setTrackLength(buffer.getNextUInt16AsInt());
-        sessionData.setSessionType(SessionType.fromInt(buffer.getNextUInt8AsInt()));
+        sessionData.setSessionType(buffer.getNextUInt8AsInt());
         sessionData.setTrackId(buffer.getNextInt8AsInt());
-        sessionData.setFormula(Formula.fromInt(buffer.getNextInt8AsInt()));
+        sessionData.setFormula(buffer.getNextInt8AsInt());
         sessionData.setSessionTimeLeft(buffer.getNextUInt16AsInt());
         sessionData.setSessionDuration(buffer.getNextUInt16AsInt());
         sessionData.setPitSpeedLimit(buffer.getNextUInt8AsInt());
@@ -300,7 +300,7 @@ public class PacketDeserializer {
         sessionData.setSliProNativeSupport(buffer.getNextUInt8AsBoolean());
         sessionData.setNumMarshalZones(buffer.getNextInt8AsInt());
         sessionData.setMarshalZones(buildMarshalZones());
-        sessionData.setSafetyCarStatus(SafetyCarStatus.fromInt(buffer.getNextUInt8AsInt()));
+        sessionData.setSafetyCarStatus(buffer.getNextUInt8AsInt());
         sessionData.setNetworkGame(buffer.getNextUInt8AsBoolean());
 
         return sessionData;

@@ -2,8 +2,9 @@ package com.frgp.f1telemetry;
 
 import com.frgp.f1telemetry.entity.Packet;
 import com.frgp.f1telemetry.entity.PacketSessionData;
-import com.frgp.f1telemetry.util.CreateFileUtil;
 import com.frgp.f1telemetry.util.PacketDeserializer;
+import com.frgp.racing.entity.TlmSession;
+import com.frgp.racing.service.impl.TlmSessionServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,7 @@ public class F12019TelemetryUDPServer {
         port = DEFAULT_PORT;
     }
 
-    public static void main() throws IOException {
+    public static void init() throws IOException {
         try {
             InetAddress ia = InetAddress.getLocalHost();
 
@@ -58,9 +59,10 @@ public class F12019TelemetryUDPServer {
                 .bindTo("0.0.0.0")
                 .onPort(20777)
                 .consumeWith((p) -> {
-                    log.trace(p.toJSON());
-                    String file = p.getHeader().getSessionUID() + "_" + p.getHeader().getPlayerCarIndex() + "_" + p.getHeader().getPacketId();
-                    CreateFileUtil.createJsonFile(p.toJSON(), file);
+//                    log.trace(p.toJSON());
+//                    String file = p.getHeader().getSessionUID() + "_" + p.getHeader().getPlayerCarIndex() + "_" + p.getHeader().getPacketId();
+//                    CreateFileUtil.createJsonFile(p.toJSON(), file);
+                    log.trace(p.getHeader().getPacketId() + "");
                     switch (p.getHeader().getPacketId()) {
                         case 0: // Motion
                             // motion data ignore
@@ -68,13 +70,35 @@ public class F12019TelemetryUDPServer {
                         case 1: // Session
                             PacketSessionData data = (PacketSessionData) p;
                             String id = p.getHeader().getSessionUID() + "_" + p.getHeader().getPlayerCarIndex() + "_" + p.getHeader().getFrameIdentifier();
+                            TlmSession tlmSession = new TlmSession();
+                            tlmSession.setId(id);
+                            tlmSession.setWeather(data.getWeather());
+                            tlmSession.setTrackTemperature(data.getTrackTemperature());
+                            tlmSession.setAirTemperature(data.getAirTemperature());
+                            tlmSession.setTotalLaps(data.getTotalLaps());
+                            tlmSession.setTrackLength(data.getTrackLength());
+                            tlmSession.setSessionType(data.getSessionType());
+                            tlmSession.setTrackId(data.getTrackId());
+                            tlmSession.setFormula(data.getFormula());
+                            tlmSession.setSessionTimeLeft(data.getSessionTimeLeft());
+                            tlmSession.setSessionDuration(data.getSessionDuration());
+                            tlmSession.setPitSpeedLimit(data.getPitSpeedLimit());
+                            tlmSession.setGamePaused(data.getGamePaused());
+                            tlmSession.setSpectating(data.getSpectating());
+                            tlmSession.setSpectatorCarIndex(data.getSpectatorCarIndex());
+                            tlmSession.setSliProNativeSupport(data.getSliProNativeSupport());
+                            tlmSession.setNumMarshalZones(data.getNumMarshalZones());
+                            tlmSession.setSafetyCarStatus(data.getSafetyCarStatus());
+                            tlmSession.setNetworkGame(data.getNetworkGame());
+                            TlmSessionServiceImpl tlmSessionService = new TlmSessionServiceImpl();
+                            tlmSessionService.save(tlmSession);
                             break;
                         case 2: // Lap
                             break;
                     }
-                })
-                .start();
+                }).start();
     }
+
     /**
      * Create an instance of the UDP server
      *
