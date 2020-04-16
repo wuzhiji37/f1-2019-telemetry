@@ -1,6 +1,9 @@
 package com.frgp.f1telemetry.entity;
 
 import com.frgp.f1telemetry.entity.elements.MarshalZone;
+import com.frgp.f1telemetry.util.CreateFileUtil;
+import com.frgp.racing.service.impl.TlmSessionServiceImpl;
+import com.frgp.racing.util.Result;
 
 import java.util.List;
 
@@ -181,4 +184,13 @@ public class PacketSessionData extends Packet {
         this.networkGame = networkGame;
     }
 
+    public void save() {
+        System.out.println("---");
+        Result result = (new TlmSessionServiceImpl()).addSession(this);
+        System.out.println("1" + result);
+        System.out.println("X");
+        String file = this.getHeader().getSessionUID() + "_" + this.getHeader().getPlayerCarIndex() + "_" + this.getHeader().getPacketId();
+        CreateFileUtil.createJsonFile(this.toJSON(), file);
+        System.out.println("Y");
+    }
 }

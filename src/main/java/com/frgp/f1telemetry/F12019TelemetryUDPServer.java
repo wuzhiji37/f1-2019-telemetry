@@ -3,10 +3,10 @@ package com.frgp.f1telemetry;
 import com.frgp.f1telemetry.entity.Packet;
 import com.frgp.f1telemetry.entity.PacketSessionData;
 import com.frgp.f1telemetry.util.PacketDeserializer;
-import com.frgp.racing.entity.TlmSession;
 import com.frgp.racing.service.impl.TlmSessionServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -29,6 +29,8 @@ import java.util.function.Consumer;
  * @author frgp
  */
 public class F12019TelemetryUDPServer {
+    @Autowired
+    private static TlmSessionServiceImpl tlmSessionService;
     private static final Logger log = LoggerFactory.getLogger(F12019TelemetryUDPServer.class);
 
     private static final String DEFAULT_BIND_ADDRESS = "0.0.0.0";
@@ -42,6 +44,15 @@ public class F12019TelemetryUDPServer {
     private F12019TelemetryUDPServer() {
         bindAddress = DEFAULT_BIND_ADDRESS;
         port = DEFAULT_PORT;
+    }
+
+    /**
+     * Create an instance of the UDP server
+     *
+     * @return F12019TelemetryUDPServer
+     */
+    public static F12019TelemetryUDPServer create() {
+        return new F12019TelemetryUDPServer();
     }
 
     public static void init() throws IOException {
@@ -59,55 +70,33 @@ public class F12019TelemetryUDPServer {
                 .bindTo("0.0.0.0")
                 .onPort(20777)
                 .consumeWith((p) -> {
-//                    log.trace(p.toJSON());
-//                    String file = p.getHeader().getSessionUID() + "_" + p.getHeader().getPlayerCarIndex() + "_" + p.getHeader().getPacketId();
-//                    CreateFileUtil.createJsonFile(p.toJSON(), file);
-                    log.trace(p.getHeader().getPacketId() + "");
+                    log.trace(p.toJSON());
                     switch (p.getHeader().getPacketId()) {
                         case 0: // Motion
                             // motion data ignore
                             break;
                         case 1: // Session
-                            PacketSessionData data = (PacketSessionData) p;
-                            String id = p.getHeader().getSessionUID() + "_" + p.getHeader().getPlayerCarIndex() + "_" + p.getHeader().getFrameIdentifier();
-                            TlmSession tlmSession = new TlmSession();
-                            tlmSession.setId(id);
-                            tlmSession.setWeather(data.getWeather());
-                            tlmSession.setTrackTemperature(data.getTrackTemperature());
-                            tlmSession.setAirTemperature(data.getAirTemperature());
-                            tlmSession.setTotalLaps(data.getTotalLaps());
-                            tlmSession.setTrackLength(data.getTrackLength());
-                            tlmSession.setSessionType(data.getSessionType());
-                            tlmSession.setTrackId(data.getTrackId());
-                            tlmSession.setFormula(data.getFormula());
-                            tlmSession.setSessionTimeLeft(data.getSessionTimeLeft());
-                            tlmSession.setSessionDuration(data.getSessionDuration());
-                            tlmSession.setPitSpeedLimit(data.getPitSpeedLimit());
-                            tlmSession.setGamePaused(data.getGamePaused());
-                            tlmSession.setSpectating(data.getSpectating());
-                            tlmSession.setSpectatorCarIndex(data.getSpectatorCarIndex());
-                            tlmSession.setSliProNativeSupport(data.getSliProNativeSupport());
-                            tlmSession.setNumMarshalZones(data.getNumMarshalZones());
-                            tlmSession.setSafetyCarStatus(data.getSafetyCarStatus());
-                            tlmSession.setNetworkGame(data.getNetworkGame());
-                            TlmSessionServiceImpl tlmSessionService = new TlmSessionServiceImpl();
-                            tlmSessionService.save(tlmSession);
+                            ((PacketSessionData) p).save();
                             break;
                         case 2: // Lap
                             break;
+                        case 3: // Lap
+                            break;
+                        case 4: // Lap
+                            break;
+                        case 5: // Lap
+                            break;
+                        case 6: // Lap
+                            break;
+                        case 7: // Lap
+                            break;
+                        default:
+                            System.out.println(-1);
+
                     }
-                }).start();
+                })
+                .start();
     }
-
-    /**
-     * Create an instance of the UDP server
-     *
-     * @return F12019TelemetryUDPServer
-     */
-    public static F12019TelemetryUDPServer create() {
-        return new F12019TelemetryUDPServer();
-    }
-
     /**
      * Set the bind address
      *

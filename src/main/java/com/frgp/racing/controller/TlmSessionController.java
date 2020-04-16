@@ -1,8 +1,9 @@
 package com.frgp.racing.controller;
 
 
+import com.frgp.racing.service.impl.TlmSessionServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -16,5 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tlm-session")
 public class TlmSessionController {
-
+    @Autowired
+    TlmSessionServiceImpl tlmSessionService;
 }

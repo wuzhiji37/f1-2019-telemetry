@@ -25,8 +25,4 @@ public abstract class Packet {
         }
         return json;
     }
-
-    public String primaryKey() {
-        return  header.getSessionUID().toString() + '_' + header.getFrameIdentifier();
-    }
 }
